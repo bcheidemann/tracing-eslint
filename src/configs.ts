@@ -11,7 +11,7 @@ export function recommended(plugin: FlatConfig.Plugin): FlatConfig.Config {
       'tracing-eslint': plugin,
     },
     rules: {
-      "prefer-explicit-resource-management": "error",
+      "tracing-eslint/prefer-explicit-resource-management": "error",
     },
   }
 }
