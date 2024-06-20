@@ -1,0 +1,32 @@
+{
+  "name": "@bcheidemann/tracing-eslint",
+  "scripts": {
+    "test": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcheidemann/tracing-eslint.git"
+  },
+  "author": "Ben Heidemann <ben@heidemann.dev>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bcheidemann/tracing-eslint/issues"
+  },
+  "homepage": "https://github.com/bcheidemann/tracing-eslint#readme",
+  "devDependencies": {
+    "@types/eslint": "^8.56.10",
+    "@typescript-eslint/parser": "^7.13.1",
+    "@typescript-eslint/rule-tester": "^7.13.1",
+    "@typescript-eslint/utils": "^7.13.1",
+    "eslint": "^8.56.0",
+    "eslint9": "npm:eslint@^9.5.0",
+    "typescript-eslint": "^7.13.1",
+    "vitest": "^1.6.0"
+  },
+  "peerDependencies": {
+    "eslint": "8.x || 9.x"
+  },
+  "optionalDependencies": {
+    "typescript-eslint": "*"
+  }
+}

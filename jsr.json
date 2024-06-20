@@ -1,0 +1,7 @@
+{
+  "name": "@bcheidemann/tracing-eslint",
+  "version": "0.1.0",
+  "exports": {
+    ".": "./src/plugin.ts"
+  }
+}

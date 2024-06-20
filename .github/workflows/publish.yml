@@ -1,0 +1,60 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  install:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: node_modules
+          key: node_modules-${{ matrix.os }}-${{ hashFiles('package-lock.json') }}
+          lookup-only: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+      - if: ${{ steps.cache.outputs.cache-hit != 'true' }}
+        run: npm ci
+
+  checks:
+    needs: install
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node-version: [18.x, 20.x, 22.x]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: node_modules
+          key: node_modules-${{ matrix.os }}-${{ hashFiles('package-lock.json') }}
+          fail-on-cache-miss: true
+      - name: Test
+        run: npm test
+      # - name: Lint
+      # - name: Format
+
+  publish:
+    needs: checks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish package
+        run: npx jsr publish
