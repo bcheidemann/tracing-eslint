@@ -1,5 +1,4 @@
 import { ESLintUtils } from '@typescript-eslint/utils';
-import type { Rule } from "eslint";
 
 const spanNames = [
   "span",
