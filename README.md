@@ -1,5 +1,28 @@
 # Tracing ESLint Plugin
 
+## Usage
+
+```js
+// eslint.config.mjs
+import tracingEslint from "@bcheidemann/tracing-eslint/configs";
+
+export default [
+  tracingEslint.recommended,
+];
+```
+
+Or, with `typescript-eslint`:
+
+```ts
+// eslint.config.mjs
+import tseslint from 'typescript-eslint';
+import tracingEslint from "@bcheidemann/tracing-eslint/configs";
+
+export default tseslint.config(
+  tracingEslint.recommended,
+);
+```
+
 ## Rules
 
 ### prefer-explicit-resource-management
