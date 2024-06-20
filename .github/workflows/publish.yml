@@ -47,6 +47,7 @@ jobs:
       # - name: Lint
       # - name: Format
 
+
   publish:
     needs: checks
     runs-on: ubuntu-latest
@@ -61,5 +62,9 @@ jobs:
           path: node_modules
           key: node_modules-ubuntu-latest-${{ hashFiles('package-lock.json') }}
           fail-on-cache-miss: true
+      - name: Temp debug
+        run: |
+          git status
+          git diff
       - name: Publish package
         run: npx jsr publish
