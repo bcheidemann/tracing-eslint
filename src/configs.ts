@@ -1,10 +1,17 @@
-import type { ClassicConfig } from "@typescript-eslint/utils/ts-eslint";
+import type { FlatConfig } from "@typescript-eslint/utils/ts-eslint";
 
-export const recommended: ClassicConfig.Config = {
-  parser: '@typescript-eslint/parser',
-  parserOptions: { sourceType: 'module' },
-  plugins: [
-    '@typescript-eslint',
-    '@bcheidemann/tracing-eslint',
-  ],
+export function recommended(plugin: FlatConfig.Plugin): FlatConfig.Config {
+  return {
+    name: 'tracing-eslint/recommended',
+    // languageOptions: {
+    //   parser: '@typescript-eslint/parser',
+    // },
+    // parserOptions: { sourceType: 'module' },
+    plugins: {
+      'tracing-eslint': plugin,
+    },
+    rules: {
+      "prefer-explicit-resource-management": "error",
+    },
+  }
 }

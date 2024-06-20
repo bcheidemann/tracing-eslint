@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import type { ClassicConfig, Linter } from "@typescript-eslint/utils/ts-eslint";
+import type { FlatConfig } from "@typescript-eslint/utils/ts-eslint";
 import { preferExplicitResourceManagementRule } from "./rules/preferExplicitResourceManagement.ts";
 import { recommended } from "./configs.ts";
 
@@ -7,14 +7,9 @@ const pkg = JSON.parse(
   fs.readFileSync(new URL("../package.json", import.meta.url), "utf8"),
 );
 
-type Plugin = Omit<Linter.Plugin, "configs"> & {
-  configs: Record<"recommended", ClassicConfig.Config>;
-};
+type Plugin = Omit<FlatConfig.Plugin, "configs">;
 
 const plugin: Plugin = {
-  configs: {
-    recommended,
-  },
   meta: {
     name: pkg.name,
     version: pkg.version,
@@ -23,5 +18,9 @@ const plugin: Plugin = {
     "prefer-explicit-resource-management": preferExplicitResourceManagementRule,
   },
 };
+
+export const configs: Record<"recommended", FlatConfig.Config> = {
+  recommended: recommended(plugin),
+}
 
 export default plugin;
