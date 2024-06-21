@@ -12,6 +12,7 @@ export function recommended(plugin: FlatConfig.Plugin): FlatConfig.Config {
     },
     rules: {
       "tracing-eslint/prefer-explicit-resource-management": "error",
+      "tracing-eslint/invalid-skip-attribute": "error",
     },
   }
 }

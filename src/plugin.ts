@@ -2,6 +2,7 @@ import fs from "node:fs";
 import type { FlatConfig } from "@typescript-eslint/utils/ts-eslint";
 import { preferExplicitResourceManagementRule } from "./rules/preferExplicitResourceManagement.ts";
 import { recommended } from "./configs.ts";
+import { invalidSkipAttribute } from "./rules/invalidSkipAttribute.ts";
 
 const pkg = JSON.parse(
   fs.readFileSync(new URL("../package.json", import.meta.url), "utf8"),
@@ -16,6 +17,7 @@ const plugin: Plugin = {
   },
   rules: {
     "prefer-explicit-resource-management": preferExplicitResourceManagementRule,
+    "invalid-skip-attribute": invalidSkipAttribute,
   },
 };
 
