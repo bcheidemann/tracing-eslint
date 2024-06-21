@@ -188,4 +188,4 @@ Incorrectly formatted skip arguments may result in data being logged unintention
 
 ## Contributing
 
-See [CONTRIBUTING.md](https://github.com/bcheidemann/tracing-eslintblob/master/CONTRIBUTING.md)
+See [CONTRIBUTING.md](https://github.com/bcheidemann/tracing-eslint/blob/master/CONTRIBUTING.md)
