@@ -18,6 +18,8 @@ export const invalidSkipAttribute = createRule({
       // invalidSkipByMaskAttribute
       avoidDynamicSkipAttributes:
         "Avoid dynamic skip attributes. These cannot be statically verified.",
+      avoidComplexSkipByNameAttributes:
+        "Avoid complex skip by name attributes, such as destructured objects. These can be auto-formatted, resulting in data being unintentionally logged."
     },
   },
   create(context) {
@@ -187,6 +189,14 @@ export const invalidSkipAttribute = createRule({
               return;
             }
             break;
+        }
+
+        if (context.sourceCode.getText(param) === name.value) {
+          context.report({
+            messageId: "avoidComplexSkipByNameAttributes",
+            node: name,
+          });
+          return "diagnostic";
         }
       }
       context.report({

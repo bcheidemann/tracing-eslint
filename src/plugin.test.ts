@@ -190,6 +190,12 @@ ruleTester.run(
           args: "arg0",
           errors: [{ messageId: "invalidSkipByNameAttribute" as const }],
         },
+        {
+          name: "skip by name > destructured argument",
+          attributes: "skip('{ innerKey }')",
+          args: "{ innerKey }",
+          errors: [{ messageId: "avoidComplexSkipByNameAttributes" as const }],
+        },
       ].flatMap(({ name, attributes, args, errors, ...rest }) => [
         {
           name: `method instrumentation > ${name}`,
