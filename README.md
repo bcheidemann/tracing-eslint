@@ -1,8 +1,29 @@
+<!-- omit in toc -->
 # Tracing ESLint Plugin
 
-# Overview
+## Overview
 
 ESLint plugin for the `@bcheidemann/tracing` library.
+
+<!-- omit in toc -->
+## Table of Contents
+
+- [Overview](#overview)
+- [Installation](#installation)
+  - [Node](#node)
+  - [Bun](#bun)
+  - [Deno](#deno)
+- [Usage](#usage)
+- [Rules](#rules)
+  - [prefer-explicit-resource-management](#prefer-explicit-resource-management)
+    - [Bad](#bad)
+    - [Good](#good)
+    - [Explanation](#explanation)
+  - [invalid-skip-attribute](#invalid-skip-attribute)
+    - [Bad](#bad-1)
+    - [Good](#good-1)
+    - [Explanation](#explanation-1)
+- [Contributing](#contributing)
 
 ## Installation
 
@@ -164,3 +185,7 @@ class Example {
 #### Explanation
 
 Incorrectly formatted skip arguments may result in data being logged unintentionally.
+
+## Contributing
+
+See [CONTRIBUTING.md](https://github.com/bcheidemann/tracing-eslintblob/master/CONTRIBUTING.md)
