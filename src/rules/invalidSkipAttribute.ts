@@ -174,10 +174,21 @@ export const invalidSkipAttribute = createRule({
             }
             break;
           case AST_NODE_TYPES.RestElement:
+            const typeAnnotationRange = param.typeAnnotation?.range ?? [0, 0];
+            const typeAnnotationRelativeRange = typeAnnotationRange.map(pos => pos - param.range[0]);
+            const paramText = context.sourceCode.getText(param);
+            const paramWithoutTypeAnnotation = paramText.slice(0, typeAnnotationRelativeRange[0]) + paramText.slice(typeAnnotationRelativeRange[1]);
             if (
               param.argument.type === AST_NODE_TYPES.Identifier &&
-              context.sourceCode.getText(param) === name.value
+              paramWithoutTypeAnnotation === name.value
             ) {
+              if (paramWithoutTypeAnnotation.includes("=")) {
+                context.report({
+                  messageId: "avoidComplexSkipByNameAttributes",
+                  node: name,
+                });
+                return "diagnostic";
+              }
               return;
             }
             break;

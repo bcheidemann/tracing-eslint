@@ -105,6 +105,11 @@ ruleTester.run(
         attributes: "skip('...args')",
         args: "...args",
       },
+      {
+        name: "skip by name > rest param with type annotation",
+        attributes: "skip('...args')",
+        args: "...args: string[]",
+      },
     ].flatMap(({ name, attributes, args, ...rest }) => [
       {
         name: `method instrumentation > ${name}`,
@@ -189,6 +194,12 @@ ruleTester.run(
           attributes: "skip('arg0', 'arg99')",
           args: "arg0",
           errors: [{ messageId: "invalidSkipByNameAttribute" as const }],
+        },
+        {
+          name: "skip by name > rest param with default value",
+          attributes: "skip('...args = []')",
+          args: "...args = []",
+          errors: [{ messageId: "avoidComplexSkipByNameAttributes" as const }],
         },
         {
           name: "skip by name > destructured argument",
