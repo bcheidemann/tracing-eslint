@@ -1,6 +1,10 @@
 <!-- omit in toc -->
 # Tracing ESLint Plugin
 
+[![JSR](https://jsr.io/badges/@bcheidemann/tracing-eslint)](https://jsr.io/@bcheidemann/tracing-eslint)
+[![JSR Score](https://jsr.io/badges/@bcheidemann/tracing-eslint/score)](https://jsr.io/@bcheidemann/tracing-eslint)
+![publish workflow](https://github.com/bcheidemann/tracing-eslint/actions/workflows/publish.yml/badge.svg)
+
 ## Overview
 
 ESLint plugin for the `@bcheidemann/tracing` library.
