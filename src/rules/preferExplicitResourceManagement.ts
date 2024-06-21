@@ -1,4 +1,4 @@
-import { ESLintUtils } from '@typescript-eslint/utils';
+import { createRule } from "../utils/createRule";
 
 const spanNames = [
   "span",
@@ -9,10 +9,6 @@ const spanNames = [
   "errorSpan",
   "criticalSpan",
 ];
-
-const createRule = ESLintUtils.RuleCreator(
-  name => `https://github.com/bcheidemann/tracing-eslint#${name}`,
-);
 
 export const preferExplicitResourceManagementRule = createRule({
   name: "prefer-explicit-resource-management",
