@@ -1,5 +1,45 @@
 # Tracing ESLint Plugin
 
+# Overview
+
+ESLint plugin for the `@bcheidemann/tracing` library.
+
+## Installation
+
+### Node
+
+The package is published to [JSR](https://jsr.io/@bcheidemann/parse-tracing-eslint
+new package registry for TypeScript. To install JSR packages for Node, you need
+to use the `jsr` CLI. After installing it, it will behave just like any other
+Node module.
+
+```sh
+# npm
+npx jsr add @bcheidemann/tracing-eslint
+```
+
+```sh
+# yarn
+yarn dlx jsr add @bcheidemann/tracing-eslint
+```
+
+```sh
+# pnpm
+pnpm dlx jsr add @bcheidemann/tracing-eslint
+```
+
+### Bun
+
+```sh
+bunx jsr add @bcheidemann/tracing-eslint
+```
+
+### Deno
+
+```sh
+deno add @bcheidemann/tracing-eslint
+```
+
 ## Usage
 
 ```js
