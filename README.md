@@ -29,7 +29,7 @@ ESLint plugin for the `@bcheidemann/tracing` library.
 
 ### Node
 
-The package is published to [JSR](https://jsr.io/@bcheidemann/parse-tracing-eslint)
+The package is published to [JSR](https://jsr.io/@bcheidemann/tracing-eslint)
 new package registry for TypeScript. To install JSR packages for Node, you need
 to use the `jsr` CLI. After installing it, it will behave just like any other
 Node module.
