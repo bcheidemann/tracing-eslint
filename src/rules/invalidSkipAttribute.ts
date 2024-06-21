@@ -13,7 +13,8 @@ export const invalidSkipAttribute = createRule({
     messages: {
       invalidSkipByIndexAttribute:
         "The index does not correspond to the index of a parameter on the instrumented function or method.",
-      // invalidSkipByNameAttribute
+      invalidSkipByNameAttribute:
+        "The name does not correspond to a parameter name on the instrumented function or method.",
       // invalidSkipByMaskAttribute
       avoidDynamicSkipAttributes:
         "Avoid dynamic skip attributes. These cannot be statically verified.",
@@ -62,7 +63,10 @@ export const invalidSkipAttribute = createRule({
       ) {
         return;
       }
-      handleParamsAndSkipArguments(functionToInstrument.params, skipAttribute.arguments);
+      handleParamsAndSkipArguments(
+        functionToInstrument.params,
+        skipAttribute.arguments,
+      );
     }
 
     function handleMethodDecorator(
@@ -84,7 +88,10 @@ export const invalidSkipAttribute = createRule({
       ) {
         return;
       }
-      handleParamsAndSkipArguments(maybeMethodDefinition.value.params, skipAttribute.arguments);
+      handleParamsAndSkipArguments(
+        maybeMethodDefinition.value.params,
+        skipAttribute.arguments,
+      );
     }
 
     function handleParamsAndSkipArguments(
@@ -94,50 +101,52 @@ export const invalidSkipAttribute = createRule({
       if (skipAttributeArguments.length === 0) {
         return;
       }
-      if (skipAttributeArguments.length === 1) {
-        const firstArg = skipAttributeArguments[0];
+      // TODO: Check if first arg is boolean and handle mask
+      for (const skipArgument of skipAttributeArguments) {
         if (
-          firstArg.type === AST_NODE_TYPES.UnaryExpression &&
-          ["-", "+"].includes(firstArg.operator)
+          skipArgument.type === AST_NODE_TYPES.UnaryExpression &&
+          ["-", "+"].includes(skipArgument.operator)
         ) {
           context.report({
             messageId: "invalidSkipByIndexAttribute",
-            node: firstArg,
+            node: skipArgument,
           });
           return;
         }
-        if (firstArg.type !== AST_NODE_TYPES.Literal) {
+        if (skipArgument.type !== AST_NODE_TYPES.Literal) {
           context.report({
             messageId: "avoidDynamicSkipAttributes",
-            node: firstArg,
+            node: skipArgument,
           });
           return;
         }
-        if (typeof firstArg.value === "number") {
-          handleSkipByIndex(firstArg, params);
+        if (typeof skipArgument.value === "number" && getSkipByIndexDiagnostic(skipArgument, params)) {
+          return;
+        }
+        if (typeof skipArgument.value === "string" && getSkipByNameDiagnostic(skipArgument, params)) {
           return;
         }
       }
     }
 
-    function handleSkipByIndex(
+    function getSkipByIndexDiagnostic(
       index: TSESTree.NumberLiteral,
       params: TSESTree.Parameter[],
-    ) {
+    ): "diagnostic" | undefined {
       const lastParam = params.at(-1);
       if (!lastParam) {
         context.report({
           messageId: "invalidSkipByIndexAttribute",
           node: index,
         });
-        return;
+        return "diagnostic";
       }
       if (!Number.isInteger(index.value)) {
         context.report({
           messageId: "invalidSkipByIndexAttribute",
           node: index,
         });
-        return;
+        return "diagnostic";
       }
       if (lastParam.type === AST_NODE_TYPES.RestElement) {
         return;
@@ -147,8 +156,44 @@ export const invalidSkipAttribute = createRule({
           messageId: "invalidSkipByIndexAttribute",
           node: index,
         });
-        return;
+        return "diagnostic";
       }
+    }
+
+    function getSkipByNameDiagnostic(
+      name: TSESTree.StringLiteral,
+      params: TSESTree.Parameter[],
+    ): "diagnostic" | undefined {
+      for (const param of params) {
+        switch (param.type) {
+          case AST_NODE_TYPES.Identifier:
+            if (param.name === name.value) {
+              return;
+            }
+            break;
+          case AST_NODE_TYPES.RestElement:
+            if (
+              param.argument.type === AST_NODE_TYPES.Identifier &&
+              param.argument.name === name.value
+            ) {
+              return;
+            }
+            break;
+          case AST_NODE_TYPES.AssignmentPattern:
+            if (
+              param.left.type === AST_NODE_TYPES.Identifier &&
+              param.left.name === name.value
+            ) {
+              return;
+            }
+            break;
+        }
+      }
+      context.report({
+        messageId: "invalidSkipByNameAttribute",
+        node: name,
+      });
+      return "diagnostic";
     }
   },
 });

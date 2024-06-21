@@ -76,74 +76,125 @@ ruleTester.run(
   {
     valid: [
       {
-        name: "in bounds",
-        attributes: "skip0",
+        name: "skip by index > in bounds",
+        attributes: "skip(0)",
         args: "arg0"
       },
       {
-        name: "rest param",
+        name: "skip by index > multiple in bounds",
+        attributes: "skip(0, 1)",
+        args: "arg0, arg1"
+      },
+      {
+        name: "skip by index > rest param",
         attributes: "skip(2)",
         args: "arg0, ...args",
       },
+      {
+        name: "skip by name > param name",
+        attributes: "skip('arg0')",
+        args: "arg0",
+      },
+      {
+        name: "skip by name > multiple param names",
+        attributes: "skip('arg0', 'arg1')",
+        args: "arg0, arg1",
+      },
     ].flatMap(({ name, attributes, args }) => [
       {
-        name: `method instrumentation > skip by index > ${name}`,
+        name: `method instrumentation > ${name}`,
         code: instrumentedMethod(attributes, args),
       },
       {
-        name: `function instrumentation > skip by index > ${name}`,
+        name: `function instrumentation > ${name}`,
         code: instrumentedFunction(attributes, args),
       },
       {
-        name: `function instrumentation > skip by index > ${name}`,
+        name: `function instrumentation > ${name}`,
         code: instrumentedArrowFunction(attributes, args),
       },
     ]),
     invalid: [
       ...[
         {
-          name: "negative value",
+          name: "skip by index > negative value",
           attributes: "skip(-1)",
           args: "arg0",
           errors: [{ messageId: "invalidSkipByIndexAttribute" as const }],
         },
         {
-          name: "out of bounds",
+          name: "skip by index > second negative value",
+          attributes: "skip(0, -1)",
+          args: "arg0",
+          errors: [{ messageId: "invalidSkipByIndexAttribute" as const }],
+        },
+        {
+          name: "skip by index > out of bounds",
           attributes: "skip(1)",
           args: "arg0",
           errors: [{ messageId: "invalidSkipByIndexAttribute" as const }],
         },
         {
-          name: "non-integer index",
+          name: "skip by index > second out of bounds",
+          attributes: "skip(0, 1)",
+          args: "arg0",
+          errors: [{ messageId: "invalidSkipByIndexAttribute" as const }],
+        },
+        {
+          name: "skip by index > non-integer index",
           attributes: "skip(0.5)",
           args: "arg0",
           errors: [{ messageId: "invalidSkipByIndexAttribute" as const }],
         },
         {
-          name: "non-integer index",
+          name: "skip by index > second non-integer index",
+          attributes: "skip(0, 0.5)",
+          args: "arg0",
+          errors: [{ messageId: "invalidSkipByIndexAttribute" as const }],
+        },
+        {
+          name: "skip by index > no params",
           attributes: "skip(0)",
           args: "",
           errors: [{ messageId: "invalidSkipByIndexAttribute" as const }],
         },
         {
-          name: "non-integer index",
+          name: "skip by index > dynamic value",
           attributes: "skip(2 / 2)",
           args: "arg0",
           errors: [{ messageId: "avoidDynamicSkipAttributes" as const }],
         },
+        {
+          name: "skip by index > second dynamic value",
+          attributes: "skip(0, 2 / 2)",
+          args: "arg0",
+          errors: [{ messageId: "avoidDynamicSkipAttributes" as const }],
+        },
+        {
+          name: "skip by name > invalid name",
+          attributes: "skip('arg99')",
+          args: "arg0",
+          errors: [{ messageId: "invalidSkipByNameAttribute" as const }],
+        },
+        {
+          name: "skip by name > second invalid name",
+          attributes: "skip('arg0', 'arg99')",
+          args: "arg0",
+          errors: [{ messageId: "invalidSkipByNameAttribute" as const }],
+        },
       ].flatMap(({ name, attributes, args, errors }) => [
         {
-          name: `method instrumentation > skip by index > ${name}`,
+          name: `method instrumentation > ${name}`,
           code: instrumentedMethod(attributes, args),
           errors,
         },
         {
-          name: `function instrumentation > skip by index > ${name}`,
+          name: `function instrumentation > ${name}`,
           code: instrumentedFunction(attributes, args),
           errors,
         },
         {
-          name: `function instrumentation > skip by index > ${name}`,
+          name: `function instrumentation > ${name}`,
           code: instrumentedArrowFunction(attributes, args),
           errors,
         },
