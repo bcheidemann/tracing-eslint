@@ -174,7 +174,7 @@ export const invalidSkipAttribute = createRule({
           case AST_NODE_TYPES.RestElement:
             if (
               param.argument.type === AST_NODE_TYPES.Identifier &&
-              param.argument.name === name.value
+              context.sourceCode.getText(param) === name.value
             ) {
               return;
             }

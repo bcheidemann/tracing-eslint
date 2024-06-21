@@ -91,27 +91,35 @@ ruleTester.run(
         args: "arg0, ...args",
       },
       {
-        name: "skip by name > param name",
+        name: "skip by name > identifier",
         attributes: "skip('arg0')",
         args: "arg0",
       },
       {
-        name: "skip by name > multiple param names",
+        name: "skip by name > multiple identifiers",
         attributes: "skip('arg0', 'arg1')",
         args: "arg0, arg1",
       },
-    ].flatMap(({ name, attributes, args }) => [
+      {
+        name: "skip by name > rest param",
+        attributes: "skip('...args')",
+        args: "...args",
+      },
+    ].flatMap(({ name, attributes, args, ...rest }) => [
       {
         name: `method instrumentation > ${name}`,
         code: instrumentedMethod(attributes, args),
+        ...rest,
       },
       {
         name: `function instrumentation > ${name}`,
         code: instrumentedFunction(attributes, args),
+        ...rest,
       },
       {
         name: `function instrumentation > ${name}`,
         code: instrumentedArrowFunction(attributes, args),
+        ...rest,
       },
     ]),
     invalid: [
@@ -182,21 +190,24 @@ ruleTester.run(
           args: "arg0",
           errors: [{ messageId: "invalidSkipByNameAttribute" as const }],
         },
-      ].flatMap(({ name, attributes, args, errors }) => [
+      ].flatMap(({ name, attributes, args, errors, ...rest }) => [
         {
           name: `method instrumentation > ${name}`,
           code: instrumentedMethod(attributes, args),
           errors,
+          ...rest,
         },
         {
           name: `function instrumentation > ${name}`,
           code: instrumentedFunction(attributes, args),
           errors,
+          ...rest,
         },
         {
           name: `function instrumentation > ${name}`,
           code: instrumentedArrowFunction(attributes, args),
           errors,
+          ...rest,
         },
       ]),
     ],

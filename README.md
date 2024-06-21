@@ -85,6 +85,10 @@ class Example {
   @instrument(skip("arg99"))
   a(arg0) {}
 
+  // Incorrect parameter structure
+  @instrument(skip("args"))
+  a(...args) {}
+
   // Incorrect parameter index
   @instrument(skip(99))
   a(arg0) {}
@@ -99,11 +103,15 @@ class Example {
 
 ```ts
 class Example {
-  // Incorrect parameter name
+  // Correct parameter name
   @instrument(skip("arg0"))
   a(arg0) {}
 
-  // Incorrect parameter index
+  // Correct parameter structure
+  @instrument(skip("...args"))
+  a(...args) {}
+
+  // Correct parameter index
   @instrument(skip(0))
   a(arg0) {}
 
